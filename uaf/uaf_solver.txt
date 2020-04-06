@@ -1,0 +1,44 @@
+uaf solution
+-------------
+
+The problem in the code in "uaf.cpp" is that we can have an
+access to heap's addresses at locations that were already freed (use - after - free).
+
+Actual solution here: freeing the man and woman by entering "3"
+then writing over those addresses our function pointer to give_shell in the heap
+with a new allocation (using the '2' option)
+
+
+Man's vtable is at 0x401570 - which is the address of give_shell
+when there is a call for introduce this address is loaded into the rax
+from the heap, and then add +8 ot arrive at the pointer for introduce's
+function address
+
+we will insert into that place in the heap the address if give_shell - 8
+so the final call will be to give_shell :)
+
+Enter this is the shell:
+python -c \"import struct; print struct.pack('<I', 0x401568)\" > /tmp/temp_file
+
+This creates the file with the wanted give_shell address
+
+In order to run get this input called run the command like so:
+./uaf 4 /tmp/temp_file
+
+Enter the choices in this order:
+
+3 -> freeing the two allocations thus giving us the option to insert the maliciuos data onto the heap
+
+2 -> allocating the Jill's heap address first
+
+NOTE: here give_shell will be called if we would have w->intoduce(). however the
+man's introduce call is before that -> that will result in a seg fault (because man was freed)
+Because of that we will need to call this method again - thus getting the man's address on the heap.
+
+3 -> allocating the Jacks's heap address second
+
+now simply run
+
+1 -> use will get the address of Man's vtable -> which is now the address of the vtable -8
+thus going into the vtable -8 + 8 (trying to access introduce) will result in the address "vtable"
+which is the first entry ==> give_shell's address
