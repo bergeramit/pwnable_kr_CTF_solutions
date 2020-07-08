@@ -7,5 +7,9 @@ flag: mommy now I get what PATH environment is for :)
 cmd2:
 
 command: ./cmd2 "read A && eval \$A"
+then after getting shell
+
+/bin/cat flag
+
 
 flag: FuN_w1th_5h3ll_v4riabl3s_haha
