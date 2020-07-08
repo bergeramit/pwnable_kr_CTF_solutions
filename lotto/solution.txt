@@ -1,0 +1,7 @@
+sorry mom... I FORGOT to check duplicate numbers... :(
+
+
+
+
+
+Command: python -c "print '1\n&&&&&&\n'*1000" | lotto 
